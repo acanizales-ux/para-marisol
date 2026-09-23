@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Marisol, Mi Princesita Bebé ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(to bottom, #74ebd5, #9aceff);
+        }
+        
+        .font-romantic {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .font-handwriting {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Floating Animation */
+        @keyframes floatPetal {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(720deg) translateX(100px);
+                opacity: 0.2;
+            }
+        }
+
+        .petal {
+            position: fixed;
+            top: -10px;
+            pointer-events: none;
+            z-index: 20;
+            animation: floatPetal linear infinite;
+        }
+
+        /* Sun Glow */
+        .sun-glow {
+            box-shadow: 0 0 60px 30px rgba(253, 224, 71, 0.8), 0 0 100px 60px rgba(251, 191, 36, 0.5);
+        }
+
+        /* Cloud Animation */
+        @keyframes floatCloud {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .cloud-1 { animation: floatCloud 35s linear infinite; }
+        .cloud-2 { animation: floatCloud 48s linear infinite 12s; }
+        .cloud-3 { animation: floatCloud 40s linear infinite 5s; }
+
+        /* Heart Beat */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .pulse-heart {
+            animation: heartbeat 1.8s infinite ease-in-out;
+        }
+
+        /* Flower Swaying */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .flower-sway {
+            transform-origin: bottom center;
+            animation: sway 3s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fef08a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f59e0b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-gray-800">
+
+    <div id="petals-container" class="fixed inset-0 pointer-events-none z-20 overflow-hidden"></div>
+
+    <div class="relative w-full h-[65vh] overflow-hidden bg-gradient-to-b from-sky-400 via-sky-300 to-amber-100">
+        
+        <!-- The Sun -->
+        <div class="absolute top-10 right-12 w-28 h-28 bg-yellow-300 rounded-full sun-glow flex items-center justify-center animate-pulse">
+            <i class="fa-solid fa-sun text-yellow-100 text-6xl opacity-80"></i>
+        </div>
+
+        <!-- Floating Clouds -->
+        <div class="cloud-1 absolute top-12 left-0 text-white opacity-80 text-7xl">
+            <i class="fa-solid fa-cloud"></i>
+        </div>
+        <div class="cloud-2 absolute top-28 left-0 text-white opacity-60 text-9xl">
+            <i class="fa-solid fa-cloud"></i>
+        </div>
+        <div class="cloud-3 absolute top-6 left-0 text-white opacity-75 text-8xl">
+            <i class="fa-solid fa-cloud"></i>
+        </div>
+
+        <!-- Main Heading Banner -->
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 pt-8">
+            <span class="bg-white/40 backdrop-blur-md px-6 py-2 rounded-full text-xs sm:text-sm font-semibold tracking-widest uppercase text-amber-900 shadow-sm border border-white/50 mb-4">
+                ✨ Una dedicatoria especial ✨
+            </span>
+            <h1 class="font-romantic text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-red-600 drop-shadow-md leading-tight max-w-4xl">
+                Para Marisol
+            </h1>
+            <h2 class="font-handwriting text-2xl sm:text-4xl md:text-5xl text-amber-900 mt-2 font-bold drop-shadow-sm">
+                Mi princesita bebé, ¡te quiero mucho preciosa! 💛
+            </h2>
+        </div>
+    </div>
+
+    <div class="relative -mt-24 z-10 w-full overflow-hidden">
+        <!-- SVG Yellow Field & Flowers -->
+        <div class="w-full flex justify-around items-end h-32 sm:h-48 px-2">
+            <!-- Repeated Flowers SVG Dynamic Generation via JS or HTML elements -->
+            <div id="flower-field" class="w-full flex justify-between items-end max-w-7xl mx-auto"></div>
+        </div>
+        <div class="w-full h-12 bg-gradient-to-b from-yellow-500 to-amber-600"></div>
+    </div>
+
+    <div id="start-overlay" class="fixed inset-0 z-50 bg-amber-900/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white transition-opacity duration-700">
+        <div class="bg-white/10 p-8 rounded-3xl border border-white/30 max-w-md w-full shadow-2xl flex flex-col items-center">
+            <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center text-red-500 text-4xl mb-6 shadow-lg pulse-heart">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <h2 class="font-romantic text-4xl text-yellow-300 mb-2">Un Regalo Especial</h2>
+            <p class="text-amber-100 text-sm mb-6">Toca el botón para iniciar esta hermosa sorpresa con música e imágenes hechas solo para ti.</p>
+            <button id="btn-start" class="w-full py-4 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-500 hover:from-yellow-500 hover:to-amber-600 text-amber-950 font-bold rounded-full text-lg shadow-xl hover:scale-105 active:scale-95 transition duration-300 flex items-center justify-center gap-3">
+                <i class="fa-solid fa-music"></i> Toca aquí para ver tu regalo ❤️
+            </button>
+        </div>
+    </div>
+
+    <main class="relative z-10 bg-gradient-to-b from-amber-600 via-amber-100 to-pink-100 py-12 px-4">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Music Controller Card -->
+            <div class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-yellow-200 mb-10 text-center">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 text-xl shadow-inner">
+                            <i class="fa-solid fa-compact-disc animate-spin" style="animation-duration: 6s;"></i>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-bold text-gray-800 text-base sm:text-lg">Tan Enamorados</h3>
+                            <p class="text-xs text-amber-800 font-medium">Ricardo Montaner</p>
+                        </div>
+                    </div>
+                    <button id="btn-play-toggle" class="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-md transition">
+                        <i id="play-icon" class="fa-solid fa-pause"></i>
+                    </button>
+                </div>
+
+                <!-- Lyrics Display Area -->
+                <div class="bg-amber-50/90 rounded-2xl p-6 min-h-[160px] flex flex-col justify-center items-center border border-amber-200 shadow-inner">
+                    <p id="lyric-line-prev" class="text-sm text-gray-400 italic transition-all duration-500 min-h-[20px]"></p>
+                    <p id="lyric-line-current" class="font-handwriting text-2xl sm:text-3xl text-red-600 font-bold my-2 transition-all duration-500 scale-105 drop-shadow-sm min-h-[40px] flex items-center justify-center">
+                        🎵 Escuchando la música... 🎵
+                    </p>
+                    <p id="lyric-line-next" class="text-sm text-amber-800/60 italic transition-all duration-500 min-h-[20px]"></p>
+                </div>
+            </div>
+
+            <div class="text-center my-12">
+                <h2 class="font-romantic text-4xl sm:text-5xl text-red-600 mb-2">Nuestros Momentos Juntos</h2>
+                <p class="text-amber-800 font-handwriting text-xl">Cada sonrisa a tu lado es mi regalo favorito</p>
+            </div>
+
+            <!-- Heart Frame Photo Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16">
+                
+                <!-- Photo Card 1 -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border-2 border-yellow-300 transform hover:-rotate-2 hover:scale-105 transition duration-300">
+                    <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+                        <img src="image_2537bd.jpg" alt="Marisol y tú" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-center text-amber-900 text-lg mt-3">Siempre juntos ❤️</p>
+                </div>
+
+                <!-- Photo Card 2 -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border-2 border-yellow-300 transform hover:rotate-2 hover:scale-105 transition duration-300">
+                    <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+                        <img src="image_24e161.jpg" alt="Marisol y tú" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-center text-amber-900 text-lg mt-3">Tu sonrisa me ilumina 🌟</p>
+                </div>
+
+                <!-- Photo Card 3 -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border-2 border-yellow-300 transform hover:-rotate-1 hover:scale-105 transition duration-300">
+                    <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+                        <img src="image_24e141.jpg" alt="Marisol y tú" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-center text-amber-900 text-lg mt-3">Mi princesita hermosa 🥰</p>
+                </div>
+
+                <!-- Photo Card 4 -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border-2 border-yellow-300 transform hover:rotate-2 hover:scale-105 transition duration-300">
+                    <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+                        <img src="image_24de77.jpg" alt="Marisol y tú" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-center text-amber-900 text-lg mt-3">Un beso tuyo lo cambia todo 😘</p>
+                </div>
+
+                <!-- Photo Card 5 -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border-2 border-yellow-300 transform hover:-rotate-2 hover:scale-105 transition duration-300">
+                    <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+                        <img src="image_24de40.jpg" alt="Marisol y tú" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-center text-amber-900 text-lg mt-3">Abrazos que curan el alma 💕</p>
+                </div>
+
+                <!-- Photo Card 6 -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border-2 border-yellow-300 transform hover:rotate-1 hover:scale-105 transition duration-300">
+                    <div class="relative overflow-hidden rounded-xl aspect-[3/4]">
+                        <img src="image_24de37.jpg" alt="Marisol y tú" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-center text-amber-900 text-lg mt-3">Para siempre a tu lado 💍</p>
+                </div>
+
+            </div>
+
+            <div class="relative flex flex-col items-center justify-center text-center my-16 p-8 bg-white/60 backdrop-blur-md rounded-3xl border-2 border-pink-300 shadow-2xl">
+                <!-- Glowing Heart Icon -->
+                <div class="w-24 h-24 bg-gradient-to-tr from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white text-5xl shadow-xl pulse-heart mb-6">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                
+                <h3 class="font-romantic text-4xl sm:text-5xl text-red-600 mb-4">Te Amo Marisol</h3>
+                <p class="text-gray-700 text-base sm:text-lg leading-relaxed max-w-xl mb-6">
+                    Eres la persona más especial en mi vida. Gracias por cada momento, cada sonrisa y por llenar mi mundo de flores amarillas y amor verdadero.
+                </p>
+                
+                <div class="font-handwriting text-2xl text-amber-900 font-bold">
+                    Por siempre tuyo ❤️
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Hidden Audio Player -->
+    <audio id="audio-player" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-love-piano-113280.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const lyrics = [
+            { time: 0, text: "Quizás la noche nos devuelva la mirada..." },
+            { time: 4, text: "Tal vez el viento nos susurre una canción..." },
+            { time: 8, text: "Por eso estamos tan enamorados..." },
+            { time: 13, text: "Que las horas pasan sin sentir..." },
+            { time: 18, text: "Nos hacemos compañía al caminar..." },
+            { time: 23, text: "Tan enamorados que el día parece durar mil años..." },
+            { time: 29, text: "Tan enamorados que la noche nos encuentra abrazados..." },
+            { time: 35, text: "Para Marisol, mi princesita bebé..." },
+            { time: 40, text: "Te quiero muchísimo, mi reina preciosa 💕" },
+            { time: 46, text: "Siempre juntos, tú y yo..." },
+            { time: 52, text: "Tan enamorados... ❤️" }
+        ];
+
+        const audio = document.getElementById('audio-player');
+        const overlay = document.getElementById('start-overlay');
+        const btnStart = document.getElementById('btn-start');
+        const btnPlayToggle = document.getElementById('btn-play-toggle');
+        const playIcon = document.getElementById('play-icon');
+
+        const lyricPrev = document.getElementById('lyric-line-prev');
+        const lyricCurrent = document.getElementById('lyric-line-current');
+        const lyricNext = document.getElementById('lyric-line-next');
+
+        let isPlaying = false;
+
+        // Generate Flowers in Field
+        const flowerField = document.getElementById('flower-field');
+        const flowerCount = 18;
+        for (let i = 0; i < flowerCount; i++) {
+            const flower = document.createElement('div');
+            flower.className = 'flower-sway flex flex-col items-center';
+            flower.style.animationDelay = `${(i % 5) * 0.4}s`;
+            
+            const randomHeight = Math.floor(Math.random() * 20) + 40;
+            
+            flower.innerHTML = `
+                <div class="relative w-8 h-8 sm:w-10 sm:h-10">
+                    <div class="absolute inset-0 bg-yellow-400 rounded-full border-2 border-yellow-500 shadow-sm"></div>
+                    <div class="absolute inset-2 bg-amber-600 rounded-full"></div>
+                </div>
+                <div class="w-1.5 bg-green-600 rounded-t-sm" style="height: ${randomHeight}px;"></div>
+            `;
+            flowerField.appendChild(flower);
+        }
+
+        // Floating Petals and Hearts
+        const petalsContainer = document.getElementById('petals-container');
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            
+            const isHeart = Math.random() > 0.6;
+            if (isHeart) {
+                petal.innerHTML = '<i class="fa-solid fa-heart text-pink-400 text-lg"></i>';
+            } else {
+                petal.innerHTML = '<div class="w-4 h-6 bg-yellow-300 rounded-full border border-yellow-400 opacity-90"></div>';
+            }
+
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 5 + 5 + 's';
+            petal.style.fontSize = Math.random() * 10 + 15 + 'px';
+
+            petalsContainer.appendChild(petal);
+
+            setTimeout(() => {
+                petal.remove();
+            }, 10000);
+        }
+
+        setInterval(createPetal, 400);
+
+        // Start Audio & Overlay logic
+        btnStart.addEventListener('click', () => {
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 700);
+
+            audio.play().then(() => {
+                isPlaying = true;
+                playIcon.className = 'fa-solid fa-pause';
+            }).catch(err => {
+                console.log("Audio play blocked: ", err);
+            });
+        });
+
+        btnPlayToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                playIcon.className = 'fa-solid fa-play';
+            } else {
+                audio.play();
+                isPlaying = true;
+                playIcon.className = 'fa-solid fa-pause';
+            }
+        });
+
+        // Sync Lyrics with Audio Time
+        audio.addEventListener('timeupdate', () => {
+            const currentTime = audio.currentTime;
+            let currentLyricIndex = 0;
+
+            for (let i = 0; i < lyrics.length; i++) {
+                if (currentTime >= lyrics[i].time) {
+                    currentLyricIndex = i;
+                }
+            }
+
+            const prev = lyrics[currentLyricIndex - 1] ? lyrics[currentLyricIndex - 1].text : '';
+            const curr = lyrics[currentLyricIndex] ? lyrics[currentLyricIndex].text : '';
+            const next = lyrics[currentLyricIndex + 1] ? lyrics[currentLyricIndex + 1].text : '';
+
+            if (lyricCurrent.innerText !== curr) {
+                lyricPrev.innerText = prev;
+                lyricCurrent.innerText = curr;
+                lyricNext.innerText = next;
+            }
+        });
+    </script>
+</body>
+</html>
